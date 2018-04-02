@@ -11,7 +11,25 @@
 \begin{document}
 \maketitle
 
-For our project, we propose to do blah
+For our project, we propose to do an analysis of various I/O efficient
+sorting algorithms.
+%
+We will examine both cache-aware algorithms and cache-oblivious algorithms
+and perform an empirical comparison of the two.
+%
+To be more specific, we plan to implement the following:
+\begin{itemize}
+\item Buffer trees, and a buffer tree insertion based sort.
+\item K-way mergesort, as discussed in lecture.
+\item Cache-oblivious sample sort, with the I/O efficient transpose operation.
+\end{itemize}
+We hope to examine the efficiency of these sorting algorithms by testing on data
+that does not fit in different levels of the cache hierarchy, and test on data
+that does not fit even within the L-3 cache, to test the difference between
+cache and main memory.
+%
+Lastly, if it is possible we will test on data that does not even fit within main memory,
+where flash or disk storage must be used.
 
 \end{document}
 

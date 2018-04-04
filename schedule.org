@@ -1,0 +1,16 @@
+* Schedule for 15853 Final Project
+** Complete by April 6
+*** Refine proposal / scope of project
+** Complete by April 13
+*** Correctly implement Buffer-Trees / Buffer-Tree based sort
+** Complete by April 20
+*** Correctly implement K-way merge-sort or sample-sort
+*** Perform tests on Aware and/or laptops for Buffer-Tree sort
+** Complete by April 27
+*** Perform tests of K-way merge-sort or sample-sort
+*** Maybe implement pointer based algorithm like list ranking
+*** Finish report setup / discussions of sorts
+** Complete by May 2
+*** Finish report
+** Due May 3
+*** Submit

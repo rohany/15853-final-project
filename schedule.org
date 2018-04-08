@@ -14,3 +14,8 @@
 *** Finish report
 ** Due May 3
 *** Submit
+* Questions for Guy
+** How do buffer trees start out? ie root and leaf or just root?
+** are buffers sorted?
+** is a flush operation needed?
+** Maybe more, will think

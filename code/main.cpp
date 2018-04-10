@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
   }
 
   // Look into using mmap here?
+  // MMAP_ANON
   int* default_in = new int[N];
   int* default_out = new int[N];
 
@@ -40,15 +41,16 @@ int main(int argc, char** argv) {
 
   std::cout << "Input allocation complete" << std::endl;
 
-  std::generate(input, input + N, std::rand);
+  std::iota(input, input + N, 0);
+  std::random_shuffle(input, input + N);
 
-  std::memcpy(default_in, input, N);
-  std::memcpy(io_in, input, N);
+
+  std::memcpy(default_in, input, sizeof(int) * N);
+  std::memcpy(io_in, input, sizeof(int) * N);
 
   std::cout << "Input generation complete" << std::endl;
 
   delete[] input;
-
 
   if (mode == "buffer") {
     std::cout << "not supported yet!" << std::endl;

@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring>
 #include <chrono>
+#include <assert.h>
 
 #include "k-merge.hpp"
 #include "standard-sort.hpp"
@@ -66,7 +67,7 @@ int main(int argc, char** argv) {
     std::cout << "Standard sort time elapsed = " <<
       std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() <<std::endl;
 
-    // TODO: verify correctness
+    assert(std::is_sorted(default_out, default_out + N));
 
     delete[] default_in;
     delete[] default_out;
@@ -80,7 +81,7 @@ int main(int argc, char** argv) {
     std::cout << "IO efficient sort time elapsed = " <<
       std::chrono::duration_cast<std::chrono::seconds>(end2 - begin2).count() <<std::endl;
 
-    // TODO: verify correctness
+    assert(std::is_sorted(io_out, io_out + N));
 
     delete[] io_in;
     delete[] io_out;

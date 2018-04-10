@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <climits>
 #include <cstring>
+#include <iostream>
 #include "k-merge.hpp"
 
 KMergeSort::KMergeSort(int m, int b) {
@@ -9,7 +10,6 @@ KMergeSort::KMergeSort(int m, int b) {
 }
 
 void KMergeSort::sort(int* input, int n, int* output) {
-
   if (n <= M) {
     std::memcpy(output, input, n);
     std::sort(output, output + n);
@@ -25,6 +25,7 @@ void KMergeSort::sort(int* input, int n, int* output) {
 
   int** int_res = new int*[M/B];
 
+
   for (int i = 0;i < pieces;i++) {
     int s =  (n / (M / B)) * i;
     // end is exclusive
@@ -35,32 +36,53 @@ void KMergeSort::sort(int* input, int n, int* output) {
 
     sort(input + s, end - s, int_res[i]);
   }
-  // perform a k-way merge
 
-  // naive merge
+  // // perform a k-way merge
+
+  // for (int i = 0;i < pieces;i++) {
+  //   std::cout << starts[i] << std::endl;
+  // }
+
+  // // naive merge
   for (int i = 0;i < n;i++) {
     int m = INT_MAX;
     int id = -1;
     for (int j = 0;j < pieces;j++) {
       int comp = INT_MAX;
-      if (cur[j] < (n / (M / B)) && starts[j] + cur[j] < n) {
+      if (cur[j] < (n / (M / B)) && (starts[j] + cur[j]) < n) {
         comp = int_res[j][starts[j] + cur[j]];
       }
       if (comp < m) {
         m = comp;
         id = j;
       }
-      output[i] = m;
-      cur[id]++;
     }
+    output[i] = m;
+    cur[id]++;
   }
 
   delete[] starts;
+  std::cout << "end" << std::endl;
   delete[] cur;
 
   for(int i = 0;i < pieces;i++) {
     delete[] int_res[i];
   }
   delete[] int_res;
+
+  // for (int i = 0;i < pieces;i++) {
+  //   std::cout << starts[i] << std::endl;
+  // }
+
+  // std::cout << starts << " " << cur << std::endl;
+  // std::cout << "before" << std::endl;
+  // delete[] starts;
+  // std::cout << "end" << std::endl;
+  // delete[] cur;
+
+  // for(int i = 0;i < pieces;i++) {
+  //   delete[] int_res[i];
+  // }
+  // delete[] int_res;
 
 }

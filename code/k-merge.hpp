@@ -1,3 +1,5 @@
+#pragma once
+
 class KMergeSort {
 public:
   KMergeSort(int M, int B);

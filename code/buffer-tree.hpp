@@ -1,3 +1,5 @@
+#pragma once
+
 class BufferTreeNode {
 public:
   int M, B;

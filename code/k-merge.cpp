@@ -1,5 +1,4 @@
 #include "k-merge.hpp"
-#include "standard-sort.hpp"
 
 KMergeSort::KMergeSort(int m, int b) {
   M = m;

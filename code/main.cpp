@@ -67,9 +67,11 @@ int main(int argc, char** argv) {
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
     std::cout << "Standard sort time elapsed = " <<
-      std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() <<std::endl;
+      std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() <<std::endl;
 
-    assert(std::is_sorted(default_out, default_out + N));
+    for(int i = 0;i < N;i++) {
+      assert(default_out[i] == i);
+    }
 
     delete[] default_in;
     delete[] default_out;
@@ -81,9 +83,11 @@ int main(int argc, char** argv) {
     std::chrono::steady_clock::time_point end2 = std::chrono::steady_clock::now();
 
     std::cout << "IO efficient sort time elapsed = " <<
-      std::chrono::duration_cast<std::chrono::seconds>(end2 - begin2).count() <<std::endl;
+      std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() <<std::endl;
 
-    assert(std::is_sorted(io_out, io_out + N));
+    for(int i = 0;i < N;i++) {
+      assert(io_out[i] == i);
+    }
 
     delete[] io_in;
     delete[] io_out;

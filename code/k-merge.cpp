@@ -10,6 +10,7 @@ KMergeSort::KMergeSort(int m, int b) {
 }
 
 void KMergeSort::sort(int* input, int n, int* output) {
+
   if (n <= M) {
     std::memcpy(output, input, sizeof(int) * n);
     std::sort(output, output + n);
@@ -20,20 +21,21 @@ void KMergeSort::sort(int* input, int n, int* output) {
 
   int pieces = M/B;
 
-  int* starts = new int[M/B];
+  int* ends = new int[M/B];
   int* cur = new int[M/B];
 
   int** int_res = new int*[M/B];
 
-  // std::cout << pieces << " " << (n / (M / B)) << " " << n << std::endl;
-
   for (int i = 0;i < pieces;i++) {
     int s =  (n / (M / B)) * i;
     // end is exclusive
-    int end = std::min(n, s + (n / (M / B)));
-    starts[i] = s;
+    int end = s + (n / (M / B));
+    if (i + 1 == pieces) {
+      end = n;
+    }
+    ends[i] = end - s;
     cur[i] = 0;
-    int_res[i] = new int[n / (M / B)];
+    int_res[i] = new int[end - s];
 
     sort(input + s, end - s, int_res[i]);
   }
@@ -46,7 +48,7 @@ void KMergeSort::sort(int* input, int n, int* output) {
     int id = -1;
     for (int j = 0;j < pieces;j++) {
       int comp = INT_MAX;
-      if (cur[j] < (n / (M / B)) && (starts[j] + cur[j]) < n) {
+      if (cur[j] < ends[j]) {
         comp = int_res[j][cur[j]];
       }
       if (comp < m) {
@@ -58,7 +60,7 @@ void KMergeSort::sort(int* input, int n, int* output) {
     cur[id]++;
   }
 
-  delete[] starts;
+  delete[] ends;
   delete[] cur;
 
   for(int i = 0;i < pieces;i++) {

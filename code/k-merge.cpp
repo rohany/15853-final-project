@@ -1,7 +1,12 @@
 #include <algorithm>
+#include <functional>
 #include <climits>
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include <queue>
+#include <tuple>
+
 #include "k-merge.hpp"
 
 KMergeSort::KMergeSort(int m, int b) {
@@ -40,24 +45,27 @@ void KMergeSort::sort(int* input, int n, int* output) {
     sort(input + s, end - s, int_res[i]);
   }
 
-  // // perform a k-way merge
+  // perform a k-way merge
 
-  // // naive merge
-  for (int i = 0;i < n;i++) {
-    int m = INT_MAX;
-    int id = -1;
-    for (int j = 0;j < pieces;j++) {
-      int comp = INT_MAX;
-      if (cur[j] < ends[j]) {
-        comp = int_res[j][cur[j]];
-      }
-      if (comp < m) {
-        m = comp;
-        id = j;
-      }
+  auto cmp = [](std::pair<int, int> l, std::pair<int, int> r) {
+    return l.first > r.first;
+  };
+  std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>,  decltype(cmp)> heap(cmp);
+  for (int i = 0;i < pieces;i++) {
+    heap.push(std::pair<int, int>(int_res[i][0], i));
+  }
+
+  int i = 0;
+  while (i < n) {
+    auto p = heap.top();
+    output[i] = p.first;
+    cur[p.second]++;
+
+    heap.pop();
+    if (cur[p.second] < ends[p.second]) {
+      heap.push(std::pair<int, int>(int_res[p.second][cur[p.second]], p.second));
     }
-    output[i] = m;
-    cur[id]++;
+    i++;
   }
 
   delete[] ends;

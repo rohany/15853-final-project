@@ -4,6 +4,7 @@
 #include <cstring>
 #include <chrono>
 #include <assert.h>
+#include <sys/mman.h>
 
 #include "k-merge.hpp"
 #include "standard-sort.hpp"
@@ -31,13 +32,38 @@ int main(int argc, char** argv) {
 
   // Look into using mmap here?
   // MMAP_ANON
-  int* default_in = new int[N];
-  int* default_out = new int[N];
+  // int* default_in = new int[N];
+  // int* default_out = new int[N];
+  int* default_in = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  if (default_in == MAP_FAILED) {
+    std::cout << "mmap failed 1" << std::endl;
+    exit(1);
+  }
+  int* default_out = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  if (default_out == MAP_FAILED) {
+    std::cout << "mmap failed 2" << std::endl;
+    exit(1);
+  }
 
-  int* io_in = new int[N];
-  int* io_out = new int[N];
+  int* io_in = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  if (io_in == MAP_FAILED) {
+    std::cout << "mmap failed 3" << std::endl;
+    exit(1);
+  }
+  int* io_out = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  if (io_out == MAP_FAILED) {
+    std::cout << "mmap failed 4" << std::endl;
+    exit(1);
+  }
 
-  int* input = new int[N];
+
+
+
+  int* input = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  if (input == MAP_FAILED) {
+    std::cout << "mmap failed 5" << std::endl;
+    exit(1);
+  }
 
   std::cout << "Input allocation complete" << std::endl;
 
@@ -50,7 +76,7 @@ int main(int argc, char** argv) {
 
   std::cout << "Input generation complete" << std::endl;
 
-  delete[] input;
+  munmap(input, N * sizeof(int));
 
   if (mode == "buffer") {
     std::cout << "not supported yet!" << std::endl;
@@ -73,8 +99,8 @@ int main(int argc, char** argv) {
       assert(default_out[i] == i);
     }
 
-    delete[] default_in;
-    delete[] default_out;
+    munmap(default_in, N * sizeof(int));
+    munmap(default_out, N * sizeof(int));
 
     std::chrono::steady_clock::time_point begin2 = std::chrono::steady_clock::now();
 
@@ -89,8 +115,8 @@ int main(int argc, char** argv) {
       assert(io_out[i] == i);
     }
 
-    delete[] io_in;
-    delete[] io_out;
+    munmap(io_in, N * sizeof(int));
+    munmap(io_out, N * sizeof(int));
 
     return 0;
   }

@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 class BufferTreeNode {
 public:
@@ -7,28 +8,36 @@ public:
   bool isLeaf;
 
   BufferTreeNode* parent;
-  BufferTreeNode** children;
+  std::vector<BufferTreeNode*> children;
+  std::vector<int> pivots;
 
-  BufferTreeNode(int M, int B, bool isLeaf, BufferTreeNode* parent);
-
-  // requires the buffer has room
-  // returns whether or not the buffer is full
-  bool insertIntoBuffer(int data);
-
-  // unsure if this is necessary
-  int getBufferSize();
-
-  // More will be added as we go
-
-private:
   // This will be all of the data of a leaf node,
   // or the buffer of an internal node.
-  int* buffer;
+  std::vector<int> buffer;
   int bufferCounter;
   int buflen;
 
   int mb;
 
+  BufferTreeNode(int m, int b, bool leaf, BufferTreeNode* p) {
+    M = m;
+    B = b;
+    isLeaf = leaf;
+    parent = p;
+
+    mb = M / B;
+
+    buflen = M;
+
+    if (isLeaf) {
+      buflen = B;
+    }
+    // else {
+    //   children.reserve(mb);
+    // }
+
+    // buffer.reserve(buflen);
+  }
 };
 
 class BufferTree {
@@ -52,5 +61,7 @@ public:
   // Assuming the size of the output is the same
   // as the number of elements in the tree
   void writeOut(int* output);
+private:
+  void rec_insert(BufferTreeNode* cur, int data);
 
 };

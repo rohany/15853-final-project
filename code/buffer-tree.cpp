@@ -7,6 +7,20 @@
 
 /* BEGIN BUFFERTREENODE IMPLEMENTATION */
 
+/*
+
+High level idea for insert - 
+
+insert into child
+
+if child has too many children, split child into half, insert new element into current node, and return
+
+beginning of tree - 
+buffer of size m, once it hits m, sort it and create a root node.
+
+*/
+
+
 BufferTreeNode::BufferTreeNode(int m, int b, bool leaf, BufferTreeNode* p) {
   M = m;
   B = b;

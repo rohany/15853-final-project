@@ -59,24 +59,28 @@ int main(int argc, char** argv) {
 
 
 
-  int* input = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-  if (input == MAP_FAILED) {
-    std::cout << "mmap failed 5" << std::endl;
-    exit(1);
-  }
+  // int* input = (int*)mmap(NULL, N * sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  // if (input == MAP_FAILED) {
+  //   std::cout << "mmap failed 5" << std::endl;
+  //   exit(1);
+  // }
 
   std::cout << "Input allocation complete" << std::endl;
 
-  std::iota(input, input + N, 0);
-  std::random_shuffle(input, input + N);
+  // std::iota(input, input + N, 0);
+  // std::random_shuffle(input, input + N);
 
 
-  std::memcpy(default_in, input, sizeof(int) * N);
-  std::memcpy(io_in, input, sizeof(int) * N);
+  // std::memcpy(default_in, input, sizeof(int) * N);
+  // std::memcpy(io_in, input, sizeof(int) * N);
+  for (int i = 0;i < N;i++) {
+    default_in[i] = N-i - 1;
+    io_in[i] = N-i - 1;
+  }
 
   std::cout << "Input generation complete" << std::endl;
 
-  munmap(input, N * sizeof(int));
+  // munmap(input, N * sizeof(int));
 
   if (mode == "buffer") {
     std::cout << "not supported yet!" << std::endl;

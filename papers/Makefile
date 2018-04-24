@@ -1,3 +1,6 @@
+report:
+	pdflatex report.tex
+
 proposal:
 	pdflatex proposal.tex
 

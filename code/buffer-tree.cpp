@@ -63,21 +63,21 @@ void BufferTree::rec_insert(BufferTreeNode* cur, int data) {
         auto it = std::lower_bound(cur->pivots.begin(), cur->pivots.end(), cur->buffer[i]);
         int idx = std::distance(cur->pivots.begin(), it);
         // is this the right child - i think lower bound works here
-        rec_insert(cur->children[i], cur->buffer[i]);
+        rec_insert(cur->children[idx], cur->buffer[i]);
         // rebalance the child node now
         // if child is a leaf
-        if (cur->children[i]->isLeaf &&
-            (cur->children[i]->buffer.size() >= cur->children[i]->buflen)) {
-          // split chilren[i], who is a leaf
+        if (cur->children[idx]->isLeaf &&
+            (cur->children[idx]->buffer.size() >= cur->children[idx]->buflen)) {
+          // split chilren[idx], who is a leaf
           // @RAHUL CHECK THAT THIS MAKES SENSE
-          int mid = cur->children[i]->buflen / 2;
-          auto midIter = cur->children[i]->buffer.begin() + mid;
+          int mid = cur->children[idx]->buflen / 2;
+          auto midIter = cur->children[idx]->buffer.begin() + mid;
 
           BufferTreeNode n1(M, B, true, cur);
           BufferTreeNode n2(M, B, true, cur);
 
-          n1.buffer = std::vector<int>(cur->children[i]->buffer.begin(), midIter);
-          n2.buffer = std::vector<int>(midIter, cur->children[i]->buffer.end());
+          n1.buffer = std::vector<int>(cur->children[idx]->buffer.begin(), midIter);
+          n2.buffer = std::vector<int>(midIter, cur->children[idx]->buffer.end());
 
           // at this point, cur->pivots[i] contains an element that is
           // larger than all elements in n1 and n2, and cur->pivots[i-1]
@@ -86,8 +86,8 @@ void BufferTree::rec_insert(BufferTreeNode* cur, int data) {
           cur->children[i] = &n2;
           cur->children.insert(cur->children.begin() + i, &n1);
 
-        } else if (cur->children[i]->children.size() > cur->children[i]->mb) {
-          // split children[i], who is an internal node
+        } else if (cur->children[idx]->children.size() > cur->children[idx]->mb) {
+          // split children[idx], who is an internal node
         }
       }
     }

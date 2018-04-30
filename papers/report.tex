@@ -208,12 +208,66 @@ In this way, operations are batched to be more efficient, and now a sequence
 of $N$ insertions costs $\Theta(N/B \log_{M/B}(N/B))$.
 %
 To recover a sorted sequence, we can simply walk across the leaves of the tree.
-
-
-
+%
+Because this final step takes only $N/B$ time, we can use a Buffer Tree
+to construct an I/O optimal sorting algorithm.
 
 \subsection{Algorithm and Implementation}
-wei
+The main difficulty in our implementation was the insertion function
+for our buffer trees.
+%
+Searching and writing out the sorted values to the output sequence
+were straightforward.
+%
+The difficulty in insertion was mainly the internal balancing steps.
+%
+Psueodocode for our insertion algorithm can be found in Figure~\ref{buf-insert}.
+%
+To effectively sort, we also needed to add in a flush style operation.
+%
+The main issue without an operation like this is that the buffers themselves
+are not sorted, and elements can be stuck in the buffers instead of being sorted
+at the leaves, by the time that all $N$ elements have been inserted.
+%
+To recover a sorted sequence, we need to flush all of the buffers to
+make sure that all of the elements that in the leaves, so that we can just walk
+over the leaves to output the sorted elements.
+%
+To do the flush, we just sort the current buffer, and then recursively insert each
+element into its corresponding child, and then flush each child.
+%
+After this operation, all of the buffers will be flushed, and all of the elements will
+be sorted at the leaves.
+
+
+
+
+\begin{figure*}
+
+  \begin{lstlisting}[mathescape=true]
+    fun rec_insert$(T, e)$ =
+      insert $e$ into $T$->buffer
+      if $T$ is a leaf: return
+      if $T->$buffer is full:
+        sort$(T$->buffer$)$
+        for each $d$ in $T$->buffer:
+          $c$ = child of $T$ that $d$ belongs in
+          rec_insert$(c, d)$
+          if $c$ is too large:
+            split$(c)$ into $c_1$ and $c_2$
+            insert $c_1$ and $c_2$ into $T$'s children
+
+    fun insert$(T, e)$ =
+      $T'$ = rec_insert$(T$->root, $e)$
+      if $T'$->root is too big:
+        $R$ = new root
+        $R$->children = split$(T)$
+        return $R$
+      return $T'$
+  \end{lstlisting}
+  \caption{Buffer Tree insertion algorithm}
+  \label{buf-insert}
+\end{figure*}
 
 \section{Results}
 
@@ -291,6 +345,21 @@ The results of our buffer tree sort can be found in Figure~\ref{buffer-tree-res}
 
 \section{Conclusions}
 
+In conclusion, we can see that for TODO: at least k-merge,
+algorithms that are optimal in the standard model do not accurately
+account for non uniform memory access costs.
+%
+By analyzing algorithms even in the I/O model, which assumes
+a simple memory hierarchy, and user control over memory,
+we can write algorithms that heavily outperform
+even the standard libraries of C++.
+
+\section{References}
+
+For all references we consulted the course notes of 15853.
+%
+Additionally, for some more details on buffer trees we looked at the
+original paper by Lars Arge.
 
 \end{document}
 

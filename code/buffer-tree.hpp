@@ -67,15 +67,17 @@ private:
 };
 
 class BufferTreeSort {
-  BufferTree T;
+  BufferTree* T;
+public:
   BufferTreeSort(int M, int B) {
-    T = BufferTree(M, B);
+    BufferTree T2(M, B);
+    T = &T2;
   }
   void sort(int* in, int N, int* out) {
     for(int i = 0;i < N;i++) {
-      T.insert(in[i]);
+      T->insert(in[i]);
     }
-    T.flush();
-    T.writeOut(out);
+    T->flush();
+    T->writeOut(out);
   }
-}
+};

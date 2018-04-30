@@ -65,3 +65,17 @@ private:
   void rec_insert(BufferTreeNode* cur, int data);
 
 };
+
+class BufferTreeSort {
+  BufferTree T;
+  BufferTreeSort(int M, int B) {
+    T = BufferTree(M, B);
+  }
+  void sort(int* in, int N, int* out) {
+    for(int i = 0;i < N;i++) {
+      T.insert(in[i]);
+    }
+    T.flush();
+    T.writeOut(out);
+  }
+}

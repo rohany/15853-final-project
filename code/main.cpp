@@ -83,7 +83,41 @@ int main(int argc, char** argv) {
   // munmap(input, N * sizeof(int));
 
   if (mode == "buffer") {
-    std::cout << "not supported yet!" << std::endl;
+    StandardSort stdsort;
+    BufferTreeSort iosort(M, B);
+
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+    stdsort.sort(default_in, N, default_out);
+
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
+    std::cout << "Standard sort time elapsed = " <<
+      std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() <<std::endl;
+
+    for(int i = 0;i < N;i++) {
+      assert(default_out[i] == i);
+    }
+
+    munmap(default_in, N * sizeof(int));
+    munmap(default_out, N * sizeof(int));
+
+    std::chrono::steady_clock::time_point begin2 = std::chrono::steady_clock::now();
+
+    iosort.sort(io_in, N, io_out);
+
+    std::chrono::steady_clock::time_point end2 = std::chrono::steady_clock::now();
+
+    std::cout << "IO efficient sort time elapsed = " <<
+      std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() <<std::endl;
+
+    for(int i = 0;i < N;i++) {
+      assert(io_out[i] == i);
+    }
+
+    munmap(io_in, N * sizeof(int));
+    munmap(io_out, N * sizeof(int));
+
     return 0;
   }
   else if (mode == "merge") {

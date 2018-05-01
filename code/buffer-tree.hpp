@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 
 class BufferTreeNode {
 public:
@@ -55,14 +56,17 @@ public:
 
   int getSize();
 
-  // Is this needed - follow up from Guy
   void flush();
+
+  void printTree(BufferTreeNode* cur);
 
   // Assuming the size of the output is the same
   // as the number of elements in the tree
   void writeOut(int* output);
 private:
   void rec_insert(BufferTreeNode* cur, int data);
+  void rec_flush(BufferTreeNode* cur);
+  int rec_writeOut(BufferTreeNode* cur, int* output);
 
 };
 
@@ -70,14 +74,17 @@ class BufferTreeSort {
   BufferTree* T;
 public:
   BufferTreeSort(int M, int B) {
-    BufferTree T2(M, B);
-    T = &T2;
+    T = new BufferTree(M, B);
   }
   void sort(int* in, int N, int* out) {
     for(int i = 0;i < N;i++) {
       T->insert(in[i]);
+      // T->printTree(T->root);
+      // std::cout << "NEW TREE\n";
     }
+    // T->printTree(T->root);
     T->flush();
+    // T->printTree(T->root);
     T->writeOut(out);
   }
 };

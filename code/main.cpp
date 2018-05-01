@@ -112,6 +112,7 @@ int main(int argc, char** argv) {
       std::chrono::duration_cast<std::chrono::milliseconds>(end2 - begin2).count() <<std::endl;
 
     for(int i = 0;i < N;i++) {
+      // std::cout << i << " " << io_out[i] << std::endl;
       assert(io_out[i] == i);
     }
 

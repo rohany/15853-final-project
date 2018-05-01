@@ -290,29 +290,30 @@ Allowing the instance to have only 0.5 GB of RAM allowed for easier testing,
 as we were able to allocate much smaller data and have it still spill out of
 on board memory.
 
-\subsection{K-way Mergesort Results}
-
 \begin{figure}
   \centering
-  \begin{tabular}{|c|c|c|}
+  \begin{tabular}{|c|c|c|c|}
     \hline
-    Input Size & Standard Time (Seconds) & I/O Time (Seconds)\\
+    Input Size & Standard & K-Merge & Buffer Tree \\
     \hline
     \hline
-    2 GB & 6309 & 3919 \\
+    2 GB & 6309 & 3919 & ? \\
     \hline
-    4 GB & 190721 & 78673 \\
+    4 GB & 190721 & 78673 & ? \\
     \hline
-    8 GB & 184297 & 148170 \\
+    8 GB & 184297 & 148170 & ? \\
     \hline
   \end{tabular}
-  \caption{Results of K-way Mergesort}
-  \label{k-merge-res}
+  \caption{Results of I/O sorts (Time in Seconds)}
+  \label{res}
 \end{figure}
 
-The results of our k-way mergesort algorithm can be found in Figure~\ref{k-merge-res}.
+\subsection{K-way Mergesort Results}
+
+
+The results of our k-way mergesort algorithm can be found in Figure~\ref{res}.
 %
-We ran these experiments with $M = 0.5$GB and $B = 16$ KB.
+We ran these experiments with $M = 0.5$ GB and $B = 16$ KB.
 %
 While the page size on the instance was $4$ KB, we saw better results with a larger $B$
 value.
@@ -322,25 +323,21 @@ made by the sort, which could incur a large amount of overhead, as $M/B$ is larg
 %
 We can see that our implementation performs well, consistently out-performing the sort
 provided in the STL, and even doubling the performance on the 2 and 4 GB input sizes.
+%
+The exact times fluctuated heavily between runs, but our merge sort was generally faster than the
+standard sort.
+%
+Aside from this fluctuation we aren't able to explain why the 8 GB sort is faster than the 4 GB sort.
 
 \subsection{Buffer Tree Sort}
 
-\begin{figure}
-  \centering
-  \begin{tabular}{|c|c|c|}
-    \hline
-    Input Size & Standard Time (Seconds) & I/O Time (Seconds)\\
-    \hline
-    \hline
-    wei & wei & wei \\
-    \hline
-  \end{tabular}
-  \caption{Results of Buffer Tree sort}
-  \label{buffer-tree-res}
-\end{figure}
-
-The results of our buffer tree sort can be found in Figure~\ref{buffer-tree-res}.
-
+The results of our buffer tree sort can be found in Figure~\ref{res}.
+%
+We ran these experiments with $M = 0.5$ GB and $B = 16$ KB.
+%
+As with the K-way merge algorithm, we ran with $B$ being larger than the actual page size.
+%
+We saw ? results with the buffer tree
 
 
 \section{Conclusions}

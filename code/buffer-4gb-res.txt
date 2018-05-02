@@ -1,0 +1,4 @@
+Input allocation complete
+Input generation complete
+Standard sort time elapsed = 1352901
+IO efficient sort time elapsed = 2490987

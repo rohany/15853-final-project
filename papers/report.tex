@@ -297,9 +297,9 @@ on board memory.
     Input Size & Standard & K-Merge & Buffer Tree \\
     \hline
     \hline
-    2 GB & 6309 & 3919 & ? \\
+    2 GB & 6309 & 3919 & 6625 \\
     \hline
-    4 GB & 190721 & 78673 & ? \\
+    4 GB & 130721 & 78673 & 249098 \\ % RERUN THIS?
     \hline
     8 GB & 184297 & 148170 & ? \\
     \hline
@@ -324,10 +324,10 @@ made by the sort, which could incur a large amount of overhead, as $M/B$ is larg
 We can see that our implementation performs well, consistently out-performing the sort
 provided in the STL, and even doubling the performance on the 2 and 4 GB input sizes.
 %
-The exact times fluctuated heavily between runs, but our merge sort was generally faster than the
-standard sort.
-%
-Aside from this fluctuation we aren't able to explain why the 8 GB sort is faster than the 4 GB sort.
+% The exact times fluctuated heavily between runs, but our merge sort was generally faster than the
+% standard sort.
+% %
+% Aside from this fluctuation we aren't able to explain why the 8 GB sort is faster than the 4 GB sort.
 
 \subsection{Buffer Tree Sort}
 
@@ -337,12 +337,24 @@ We ran these experiments with $M = 0.5$ GB and $B = 16$ KB.
 %
 As with the K-way merge algorithm, we ran with $B$ being larger than the actual page size.
 %
-We saw ? results with the buffer tree
-
+We did not see good results with the buffer trees, as can be seen in the table above.
+%
+For the tests we ran on, the buffer tree sort was at least as slow as the standard sort,
+or much worse.
+%
+We believe that this slowdown comes from the overly strong assumptions of the I/O
+model.
+%
+The model assumes that all accesses in fast memory are free, and thus the buffer tree
+can do operations like searching, sorting and insertions for free.
+%
+However, on a real machine, these are still non-negligible costs, and we believe that
+large number of sorted insertions, buffer sorts, and searches the buffer tree must do leads
+to a slowdown in practice.
 
 \section{Conclusions}
 
-In conclusion, we can see that for TODO: at least k-merge,
+In conclusion, we can see that for at least k-merge,
 algorithms that are optimal in the standard model do not accurately
 account for non uniform memory access costs.
 %
@@ -350,13 +362,14 @@ By analyzing algorithms even in the I/O model, which assumes
 a simple memory hierarchy, and user control over memory,
 we can write algorithms that heavily outperform
 even the standard libraries of C++.
+%
+In the case of buffer trees, we can see where the theoretical model of
+I/O efficiency makes assumptions that are too strong, and that an optimal
+data structure in the I/O model did not translate well to real machines.
 
 \section{References}
 
 For all references we consulted the course notes of 15853.
-%
-Additionally, for some more details on buffer trees we looked at the
-original paper by Lars Arge.
 
 \end{document}
 
